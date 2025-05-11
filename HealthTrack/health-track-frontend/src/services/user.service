@@ -1,0 +1,96 @@
+import api from "./api"
+
+const UserService = {
+  // Get user profile - matches your UserController.getUserProfile endpoint
+  getProfile: async () => {
+    try {
+      console.log("UserService.getProfile called")
+      const response = await api.get("/users/profile")
+      console.log("Profile response:", response.data)
+      return response.data
+    } catch (error) {
+      console.error("Error fetching user profile:", error)
+      throw error
+    }
+  },
+
+  // Update user profile
+  updateProfile: async (userData) => {
+    try {
+      console.log("UserService.updateProfile called with:", userData)
+      const response = await api.put("/users/profile", userData)
+      console.log("Update profile response:", response.data)
+      return response.data
+    } catch (error) {
+      console.error("Error updating user profile:", error)
+      throw error
+    }
+  },
+
+  // For doctors: Get patients
+  getPatients: async () => {
+    try {
+      console.log("UserService.getPatients called")
+      const response = await api.get("/doctors/patients")
+      console.log("Patients response:", response.data)
+      return response.data
+    } catch (error) {
+      console.error("Error fetching patients:", error)
+      throw error
+    }
+  },
+
+  // For patients: Get doctors
+  getDoctors: async () => {
+    try {
+      console.log("UserService.getDoctors called")
+      const response = await api.get("/patients/doctors")
+      console.log("Doctors response:", response.data)
+      return response.data
+    } catch (error) {
+      console.error("Error fetching doctors:", error)
+      throw error
+    }
+  },
+
+  // Get medical data for a patient
+  getMedicalData: async () => {
+    try {
+      console.log("UserService.getMedicalData called")
+      const response = await api.get("/users/medical-data")
+      console.log("Medical data response:", response.data)
+      return response.data
+    } catch (error) {
+      console.error("Error fetching medical data:", error)
+      throw error
+    }
+  },
+
+  // Get medications for a patient
+  getMedications: async () => {
+    try {
+      console.log("UserService.getMedications called")
+      const response = await api.get("/users/medications")
+      console.log("Medications response:", response.data)
+      return response.data
+    } catch (error) {
+      console.error("Error fetching medications:", error)
+      throw error
+    }
+  },
+
+  // Get appointments
+  getAppointments: async () => {
+    try {
+      console.log("UserService.getAppointments called")
+      const response = await api.get("/users/appointments")
+      console.log("Appointments response:", response.data)
+      return response.data
+    } catch (error) {
+      console.error("Error fetching appointments:", error)
+      throw error
+    }
+  },
+}
+
+export default UserService

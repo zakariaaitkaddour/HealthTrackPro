@@ -1,0 +1,73 @@
+"use client"
+
+import { createContext, useState, useEffect, useContext } from "react"
+import AuthService from "../services/auth.service" // Make sure this path is correct
+
+// Create context
+const AuthContext = createContext()
+
+// Provider component
+export const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkLoggedIn = () => {
+      try {
+        const user = AuthService.getCurrentUser()
+        if (user) {
+          setCurrentUser(user)
+          setIsAuthenticated(true)
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    checkLoggedIn()
+  }, [])
+
+  // Login function
+  const login = async (email, password) => {
+    const response = await AuthService.login(email, password)
+    setCurrentUser(response.user)
+    setIsAuthenticated(true)
+    return response
+  }
+
+  // Register function
+  const register = async (userData) => {
+    const response = await AuthService.register(userData)
+    setCurrentUser(response.user)
+    setIsAuthenticated(true)
+    return response
+  }
+
+  // Logout function
+  const logout = () => {
+    AuthService.logout()
+    setCurrentUser(null)
+    setIsAuthenticated(false)
+  }
+
+  // Context value
+  const value = {
+    currentUser,
+    isAuthenticated,
+    isLoading,
+    login,
+    register,
+    logout,
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
+
+// Custom hook to use auth context
+export const useAuth = () => {
+  return useContext(AuthContext)
+}
