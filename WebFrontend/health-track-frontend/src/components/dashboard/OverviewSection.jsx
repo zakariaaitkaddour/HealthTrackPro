@@ -92,7 +92,7 @@ export default function OverviewSection({ data }) {
                   <strong>Date:</strong> {format(parseISO(nextAppointment.appointment_date), 'EEE, MMM dd, yyyy @ h:mm a')}
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 1 }}>
-                  <strong>Doctor:</strong> {nextAppointment.doctor_name || `Dr. ${nextAppointment.doctor_id}`}
+                  <strong>Doctor:</strong> {nextAppointment.doctor.name || `Dr. ${nextAppointment.doctor_id}`}
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 2 }}>
                   <strong>Reason:</strong> {nextAppointment.reason}
@@ -227,16 +227,16 @@ export default function OverviewSection({ data }) {
                   <Button
                     variant="contained"
                     sx={{ bgcolor: "#00a895", "&:hover": { bgcolor: "#00806f" } }}
-                    onClick={() => navigate('/health-data')}
+                    onClick={() => navigate('/dashboard/health-tarcking')}
                   >
                     View History
                   </Button>
-                  <Button
+                  {/* <Button
                     variant="outlined"
                     onClick={() => navigate('/health-data/new')}
                   >
                     Record New Data
-                  </Button>
+                  </Button> */}
                 </Stack>
               </>
             ) : (
