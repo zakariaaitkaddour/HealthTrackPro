@@ -1,0 +1,59 @@
+services:
+  backend:
+    build: 
+      context: ./healthcare-Backend
+      dockerfile: Dockerfile
+    image: healthcare-backend
+    container_name: healthcare-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/healthcare?useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+      - healthcare-network
+
+  frontend:
+    build:
+      context: ./WebFrontend
+      dockerfile: Dockerfile
+    image: health-track-frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://backend:8080/api  # Changed from localhost to service name
+    depends_on:
+      - backend
+    networks:
+      - healthcare-network
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: healthcare-mysql
+    environment:
+      MYSQL_DATABASE: healthcare
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'  # Explicitly allow empty root password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command: 
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+
+networks:
+  healthcare-network:
+
+volumes:
+  mysql_data:
