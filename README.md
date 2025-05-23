@@ -46,4 +46,4 @@ Une application full-stack de gestion médicale avec frontend React et backend S
 1. Cloner le dépôt :
    ```bash
    git clone https://github.com/zakariaaitkaddour/HealthTrackPro.git
-   cd healthtrack-pro
+   cd HealthTrackPro
